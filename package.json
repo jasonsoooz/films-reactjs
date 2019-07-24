@@ -1,0 +1,49 @@
+{
+  "name": "films-reactjs",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "react-test-renderer": "^16.8.6",
+    "querystringify": "^2.1.1",
+    "nodemon": "^1.19.1",
+    "node-fetch": "^2.6.0",
+    "lodash": "^4.17.14"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.0.1",
+    "semantic-ui-css": "^2.4.1"
+  },
+  "scripts": {
+    "start": "npm run reset-data; react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "nodemon src/server/server.js",
+    "reset-data": "cp data-pristine.json data.json"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "jest": {
+    "watchPathIgnorePatterns": [
+      "data.json"
+    ]
+  },
+  "proxy": "http://localhost:3005",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
