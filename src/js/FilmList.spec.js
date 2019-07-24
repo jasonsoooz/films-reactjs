@@ -57,31 +57,31 @@ describe('FilmList', () => {
         });
 
         describe('user clicks Submit button on Add form', () => {
-          it('requires film', () => {
+          it('requires film', async () => {
             expect(
               filmListSelector.getValidationError('Film is required')
             ).toBeNull();
 
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
       
             expect(
                 filmListSelector.getValidationError('Film is required')
             ).toBeVisible();
           });
 
-          it('requires release date', () => {
+          it('requires release date', async () => {
             expect(
               filmListSelector.getValidationError('Release Date is required')
             ).toBeNull();
 
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
       
             expect(
                 filmListSelector.getValidationError('Release Date is required')
             ).toBeVisible();
           });
 
-          it('should add new item', () => {
+          it('should add new item', async () => {
             // initial size (number of delete buttons) needs to be called 
             // in beforeEach (FilmList before addFilm)
 
@@ -89,7 +89,7 @@ describe('FilmList', () => {
             filmListSelector.changeTitle('testFilm');
             filmListSelector.changeReleaseDate('1995-01-01');
 
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
   
             const sizeAfterSubmit = filmListSelector.numberOfDeleteButtons();
             expect(sizeAfterSubmit).toEqual(initialSize + 1);
@@ -102,7 +102,7 @@ describe('FilmList', () => {
             ).toBeNull();
           });
 
-          it('should display new item in form list', () => {
+          it('should display new item in form list', async () => {
             const expectedTitle = 'testTitle';
             filmListSelector.changeTitle(expectedTitle);
             const expectedReleaseDate = '1995-01-01';
@@ -112,7 +112,7 @@ describe('FilmList', () => {
             const expectedDirector = 'testDirector';
             filmListSelector.changeDirector(expectedDirector);
   
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
 
             expect(
               filmListSelector.getTextContent(expectedTitle)
@@ -128,17 +128,17 @@ describe('FilmList', () => {
             ).toBeVisible();
           });
 
-          it('submit with no mandatory fields, then film, requires only release date', () => {
+          it('submit with no mandatory fields, then film, requires only release date', async () => {
             expect(
               filmListSelector.getValidationError('Film is required')
             ).toBeNull();
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
             expect(
               filmListSelector.getValidationError('Film is required')
             ).toBeVisible();
 
             filmListSelector.changeTitle('testFilm');
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
 
             expect(
               filmListSelector.getValidationError('Film is required')
@@ -148,17 +148,17 @@ describe('FilmList', () => {
             ).toBeVisible();
           });
 
-          it('submit with no mandatory fields, then release date, requires only film', () => {
+          it('submit with no mandatory fields, then release date, requires only film', async () => {
             expect(
               filmListSelector.getValidationError('Release Date is required')
             ).toBeNull();
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
             expect(
               filmListSelector.getValidationError('Release Date is required')
             ).toBeVisible();
 
             filmListSelector.changeReleaseDate('2010-01-01');
-            filmListSelector.submitFilm();
+            await filmListSelector.submitFilm();
 
             expect(
               filmListSelector.getValidationError('Release Date is required')

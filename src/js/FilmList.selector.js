@@ -6,7 +6,7 @@ import Seed from './Seed'
 
 const FilmListSelector = FilmList => {
 
-  const {getAllByText,getByText,getByLabelText,queryByText} = render(<FilmList initialFilms={Seed.films}/>);
+  const {getAllByText,getByText,getByLabelText,queryByText} = render(<FilmList initialFilms={Seed.films} isTest={true}/>);
 
   const numberOfDeleteButtons = () => {
     // Count number of delete buttons as 1 delete button per film    
@@ -33,6 +33,11 @@ const FilmListSelector = FilmList => {
 
   const submitFilm = () => {
     fireEvent.click(getByText('Submit'));
+
+    return new Promise(resolve => setTimeout(() => {
+      // wrapper.update()
+      resolve()
+    }, 0))
   }
 
   const changeTitle = title => {

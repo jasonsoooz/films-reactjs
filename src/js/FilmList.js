@@ -6,7 +6,7 @@ import FilmForm from './FilmForm';
 import Client from '../server/client'
 import IDGenerator from './IdGenerator'
 
-const FilmList = ({ initialFilms }) => {
+const FilmList = ({ initialFilms, isTest }) => {
   const [films, setFilms ] = useState(initialFilms);
   const [isAdd, setIsAdd ] = useState(false);
 
@@ -14,19 +14,23 @@ const FilmList = ({ initialFilms }) => {
   const url = '/api/films'
   
   useEffect(() => {
-    const filmsPromise = client.getFilms(url);
-    filmsPromise.then(films => {
-      // console.log(`films: ${films}`);
-      setFilms(films);
-      setIsAdd(false);
-    });
+    if (!isTest) {
+      const filmsPromise = client.getFilms(url);
+      filmsPromise.then(films => {
+        // console.log(`films: ${films}`);
+        setFilms(films);
+        setIsAdd(false);
+      });
+    }
   });
 
   const handleDelete = filmId => {
     const retainedFilms = films.filter((film) => (
       film.id !== filmId
     ));
-    client.deleteFilm(url, {id: filmId});
+    if (!isTest) {
+      client.deleteFilm(url, {id: filmId});
+    }
     setFilms(retainedFilms);
   }
 
@@ -46,8 +50,10 @@ const FilmList = ({ initialFilms }) => {
       imdbRating: imdbRating,
       director: director
     }
-    client.addFilm(url, newFilm);
-
+    if (!isTest) {
+      client.addFilm(url, newFilm);
+    }
+    
     const newFilms = films.concat(newFilm);
     setFilms(newFilms);
     setIsAdd(false);
