@@ -7,8 +7,8 @@ import FilmList from './FilmList';
 
 function App() {
   return (
-    <div className="App">
-      <FilmList />
+    <div className='App'>
+      <FilmList initialFilms={[]} />
     </div>
   );
 }

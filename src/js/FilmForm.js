@@ -1,69 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class FilmForm extends React.Component {
-    state = {
-        title: '',
-        releaseDate: '',
-        imdbRating: 0,
-        director: '',
+const FilmForm = props => {
+
+    const [title, setTitle] = useState('');
+    const [releaseDate, setReleaseDate] = useState('');
+    const [imdbRating, setImdbRating] = useState(0);
+    const [director, setDirector] = useState('');
+    const [isFilmInValid, setIsFilmInValid] = useState(false);
+    const [isReleaseDateInValid, setIsReleaseDateInValid] = useState(false);
+
+    const handleCancel = event => {
+        props.onAddCancel();
+        event.preventDefault();
     };
 
-    componentDidMount() {
-        this.setState({ title: '', releaseDate: '', imdbRating: 0, director: '' });
-    }
+    const handleAddSubmit = event => {
+        if (title !== '' && releaseDate !== '') {
+            props.onAddSubmit(props.id, title, releaseDate, imdbRating, director);
+        }
 
-    handleCancel = () => {
-        this.props.onAddCancel();
-    };
-
-    handleAddSubmit = (event) => {
-        this.props.onAddSubmit(this.props.id, this.state.title, this.state.releaseDate,
-          this.state.imdbRating, this.state.director);
+        if (title === '') {
+            setIsFilmInValid(true);
+        } else {
+            setIsFilmInValid(false);
+        }
+        if (releaseDate === '') {
+            setIsReleaseDateInValid(true);
+        } else {
+            setIsReleaseDateInValid(false);
+        }
         event.preventDefault();
     }
 
-    updateTitle(evt) {
-        this.setState({ title: evt.target.value });
-    }
-    
-    updateReleaseDate(evt) {
-        this.setState({ releaseDate: evt.target.value });
-    }
-    
-    updateImdbRating(evt) {
-        this.setState({ imdbRating: evt.target.value });
-    }
-    
-    updateDirector(evt) {
-        this.setState({ director: evt.target.value });
-    }
+    const updateTitle = evt => setTitle(evt.target.value)
+    const updateReleaseDate = evt => setReleaseDate(evt.target.value);
+    const updateImdbRating = evt => setImdbRating(evt.target.value);
+    const updateDirector = evt => setDirector(evt.target.value);
 
-    render() {
-        return(
-            <form onSubmit={this.handleAddSubmit} className="ui form">
-                <h1>Add Film</h1>
-                <input type="hidden" name="id" value={this.props.id} />  
-                <div className="field">
-                    <label>Film</label>
-                    <input id="title" type="text" value={this.state.title} onChange={evt => this.updateTitle(evt)} />
-                </div>
-                <div className="field">
-                    <label>Release Date</label>
-                    <input type="date" value={this.state.releaseDate} onChange={evt => this.updateReleaseDate(evt)} />
-                </div>
-                <div className="field">
-                    <label>Imdb Rating</label>
-                    <input type="number" step="0.1" value={this.state.imdbRating} onChange={evt => this.updateImdbRating(evt)} />
-                </div>
-                <div className="field">
-                    <label>Director</label>
-                    <input id="director" type="text" value={this.state.director} onChange={evt => this.updateDirector(evt)} />
-                </div>
-                <input type="submit" value="Submit" className="ui primary button submit-button" />&nbsp;
-                <button onClick={this.handleCancel} className="ui button cancel-button">Cancel</button>
-            </form>
-        );
-    }
+    return(
+        <form onSubmit={handleAddSubmit} className='ui form'>
+            <h1>Add Film</h1>
+            <input type='hidden' name='id' value={props.id} />  
+            <div className='field'>
+                <label htmlFor='title'>Film</label>
+                <input id='title' type='text' value={title} onChange={evt => updateTitle(evt)} />
+                {isFilmInValid && <span className='App-validation-error'>Film is required</span>}
+            </div>
+            <div className='field'>
+                <label htmlFor='releaseDate'>Release Date</label>
+                <input id='releaseDate' type='date' value={releaseDate} onChange={evt => updateReleaseDate(evt)} />
+                {isReleaseDateInValid && <span className='App-validation-error'>Release Date is required</span>}
+            </div>
+            <div className='field'>
+                <label htmlFor='imdbRating'>Imdb Rating</label>
+                <input id='imdbRating' type='number' step='0.1' value={imdbRating} onChange={evt => updateImdbRating(evt)} />
+            </div>
+            <div className='field'>
+                <label htmlFor='director'>Director</label>
+                <input id='director' type='text' value={director} onChange={evt => updateDirector(evt)} />
+            </div>
+            <input type='submit' value='Submit' className='ui primary button' />&nbsp;
+            <button onClick={handleCancel} className='ui button'>Cancel</button>
+        </form>
+    );
 }
 
 export default FilmForm;

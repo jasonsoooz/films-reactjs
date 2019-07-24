@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
-    "react-test-renderer": "^16.8.6",
     "querystringify": "^2.1.1",
     "nodemon": "^1.19.1",
     "node-fetch": "^2.6.0",
-    "lodash": "^4.17.14"
+    "lodash": "^4.17.14",
+    "@testing-library/react": "^8.0.5",
+    "@testing-library/jest-dom": "^4.0.0"
   },
   "dependencies": {
     "react": "^16.8.6",

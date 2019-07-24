@@ -31,3 +31,7 @@ App {
     transform: rotate(360deg);
   }
 }
+
+.App-validation-error {
+  color: red
+}

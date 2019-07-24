@@ -1,74 +1,73 @@
 import React from 'react'
 
-import { mount } from 'enzyme'
+import {render,fireEvent} from '@testing-library/react'
 
 import Seed from './Seed'
-import Film from './Film'
 
 const FilmListSelector = FilmList => {
-  const wrapper = mount(<FilmList />);
-  wrapper.setState({ films: Seed.films, isAdd: false });
 
-  const numberOfFilms = () => {
-    return wrapper.state().films.length;
+  const {getAllByText,getByText,getByLabelText,queryByText} = render(<FilmList initialFilms={Seed.films}/>);
+
+  const numberOfDeleteButtons = () => {
+    // Count number of delete buttons as 1 delete button per film    
+    return getAllByText('Delete').length;
   }
 
   const deleteFirst = () => {
-    const deleteButton = wrapper.find('.delete-button').first();
-    deleteButton.simulate('click');
+    const deleteButton = getAllByText('Delete').pop();
+    fireEvent.click(deleteButton);
   }
 
-  const contains = element => {
-    return wrapper.contains(element)
-  }
-
-  const addButtonExists = () => {
-    return wrapper.find('.add-button').exists()
+  const addButton = () => {
+    return getByText('Add film')
   }
 
   const addFilm = () => {
-    wrapper.find('.add-button').simulate('click');
+    fireEvent.click(addButton());
   }
 
-  const cancelFilm = () => {
-    wrapper.find('.cancel-button').simulate('click');
+  const cancel = () => {
+    const cancelButton = getByText('Cancel');
+    fireEvent.click(cancelButton);
   }
 
-  const containsMatchingElement = element => {
-    return wrapper.containsMatchingElement(element);
-  }
-
-  const submit = () => {
-    const submitButton = wrapper.find('.submit-button');
-    submitButton.simulate('submit', {
-      preventDefault: () => {},
-    });
+  const submitFilm = () => {
+    fireEvent.click(getByText('Submit'));
   }
 
   const changeTitle = title => {
-    wrapper.find({id: 'title'}).simulate('change', { target: {value: title} });
+    const inputTitle = getByLabelText('Film');
+    fireEvent.change(inputTitle, {target:{value: title}});
   }
 
   const changeReleaseDate = releaseDate => {
-    wrapper.find({type: 'date'}).simulate('change', { target: {value: releaseDate} });
+    const inputReleaseDate = getByLabelText('Release Date');
+    fireEvent.change(inputReleaseDate, {target:{value: releaseDate}});
   }
 
   const changeImdb = imdb => {
-    wrapper.find({type: 'number'}).simulate('change', { target: {value: imdb} });
+    const inputImdb = getByLabelText('Imdb Rating');
+    fireEvent.change(inputImdb, {target:{value: imdb}});
   }
 
-  const changeDirector = director => {
-    wrapper.find({id: 'director'}).simulate('change', { target: {value: director} });
+  const changeDirector = imdb => {
+    const inputDirector = getByLabelText('Director');
+    fireEvent.change(inputDirector, {target:{value: imdb}});
   }
 
-  const getLastFilmWrapper = () => {
-    return wrapper.find(Film).last();
+  const getTextContent = (text) => {
+    return getByText(text);
   }
 
-  return { numberOfFilms, deleteFirst, contains, 
-    addButtonExists, addFilm, containsMatchingElement,
-    cancelFilm, submit, changeTitle, changeReleaseDate,
-    changeImdb, changeDirector, getLastFilmWrapper
+  const getValidationError = (text) => {
+    // case insensitive query
+    return queryByText(text, {exact: false});
+  }
+
+  return {numberOfDeleteButtons,deleteFirst, 
+    addButton,addFilm,cancel,submitFilm,changeTitle,
+    changeReleaseDate,changeImdb,changeDirector,
+    getTextContent,getValidationError
   }
 }
 

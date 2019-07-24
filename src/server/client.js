@@ -66,6 +66,6 @@ class Client {
 }
 
 // const client = new Client();
-// client.getFilms("http://localhost:3005/api/films");
+// client.getFilms('http://localhost:3005/api/films');
 
 export default Client;

@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { mount } from 'enzyme'
+import {render} from '@testing-library/react'
 
 const FilmSelector = Film => {
-  const wrapper = mount(<table><tbody><Film /></tbody></table>)
+  const {getByText} = render(<table><tbody><Film /></tbody></table>)
 
-  const deleteButtonExists = () => {
-    return wrapper.find('.delete-button').exists()
+  const deleteButton = () => {
+    return getByText('Delete');
   }
 
-  return { deleteButtonExists }
+  return {deleteButton}
 }
 
 export default FilmSelector
