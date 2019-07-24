@@ -28,6 +28,22 @@ npm test
 ```
 
 ## ToDo
+* fix test warnings
 * Add back end
 * Add validation on mandatory fields (title, release date)
 * Add update functionality
+
+```
+Warning: An update to FilmList inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://fb.me/react-wrap-tests-with-act
+          in FilmList (at FilmList.selector.js:9)
+
+```
