@@ -26,6 +26,10 @@ const FilmListSelector = FilmList => {
     fireEvent.click(addButton());
   }
 
+  const filmInput = () => {
+    return getByLabelText('Film');
+  }
+
   const cancel = () => {
     const cancelButton = getByText('Cancel');
     fireEvent.click(cancelButton);
@@ -70,7 +74,7 @@ const FilmListSelector = FilmList => {
   }
 
   return {numberOfDeleteButtons,deleteFirst, 
-    addButton,addFilm,cancel,submitFilm,changeTitle,
+    addButton,addFilm,filmInput,cancel,submitFilm,changeTitle,
     changeReleaseDate,changeImdb,changeDirector,
     getTextContent,getValidationError
   }

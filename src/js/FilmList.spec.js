@@ -33,10 +33,8 @@ describe('FilmList', () => {
       });
 
       it('should display Add form', () => {
-        const filmFormSelector = FilmFormSelector(FilmForm);
-
         expect(
-          filmFormSelector.filmInput()
+          filmListSelector.filmInput()
         ).toBeVisible();
       });
     
