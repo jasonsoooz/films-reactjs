@@ -24,4 +24,10 @@ describe('GetNextId', () => {
 
         expect(nextId).toEqual(6);
     });
+
+    it('should getNextId correctly for no array', () => {
+        const nextId = IdGenerator().getNextId();
+
+        expect(nextId).toEqual(1);
+    });
 });
