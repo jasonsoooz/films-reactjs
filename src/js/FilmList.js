@@ -46,6 +46,7 @@ const FilmList = ({isTest}) => {
 
   const handleAdd = () => {
     setIsAdd(true);
+    setFilmId(IDGenerator().getNextId(films))
   }
 
   const handleAddCancel = () => {
@@ -71,9 +72,9 @@ const FilmList = ({isTest}) => {
       _addNewFilmWhenNoBackend(newFilm);
     } else {
       const filmPromise = client.saveFilm(url, newFilm);
-      filmPromise.then(film => {
-        const newFilms = films.concat(film);
-        setFilms(newFilms);
+      // Express server returns all films, not just the single one added
+      filmPromise.then(films => {
+        setFilms(films);
       })
       .catch(() => {
           _addNewFilmWhenNoBackend(newFilm);

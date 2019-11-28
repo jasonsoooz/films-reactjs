@@ -28,7 +28,6 @@ npm test
 ```
 
 ## ToDo
-* run server / client
 * fix test warnings
 * Add back end
 * Add validation on mandatory fields (title, release date)

@@ -62,7 +62,7 @@ class Server {
     // Without this, request body will not have full content as its async
     this.app.use(express.json());
 
-    this.app.post(this.url, (req, res) => {
+    this.app.put(this.url, (req, res) => {
       fs.readFile(this.DATA_FILE, (err, data) => {
         const films = JSON.parse(data);
         const newFilm = {
