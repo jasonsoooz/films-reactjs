@@ -1,59 +1,44 @@
 const fetch = require('node-fetch');
 
-class Client {
-  async getFilms(url) {
-    const films = await this._fetchGet(url);
-    // console.log(`films: ${films}`);
-    return films;
+const Client = () => {
+  const getFilms = url => {
+    return _fetch(url);
   }
 
-  addFilm(url, film) {
-    return fetch(url, {
-      method: 'post',
-      body: JSON.stringify(film),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }).then(this._checkStatus)
-    // .catch(error => {
-    //   console.error(`Error: ${error}`);
-    //   throw error;
-    // });
+  const saveFilm = (url, film) => {
+    return _fetch(url, _getFetchOption('put', film));
   }
 
-  deleteFilm(url, film) {
-    return fetch(url, {
-      method: 'delete',
-      body: JSON.stringify(film),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }).then(this._checkStatus)
-    // .catch(error => {
-    //   console.error(`Error: ${error}`);
-    //   throw error;
-    // });
+  const deleteFilm = (url, film) => {
+    return _fetch(url, _getFetchOption('delete', film));
+ }
+
+  const _fetch = (url, options) => {
+    return fetch(url, options)
+      .then(_checkStatus)
+      .then(data => {
+     return data;
+   })
+   .catch(error => {
+     console.error(`Error: ${error}`);
+     throw error;
+   });
   }
 
-  _fetchGet(url) {
-    return fetch(url)
-      .then(this._checkStatus)
-      .then(json => {
-        // console.log(`json: ${json}`);
-        return json;
-      })
-      // .catch(error => {
-      //   console.error(`Error: ${error}`);
-      //   throw error;
-      // });
+  const _getFetchOption = (methodType, film) => {
+    return {
+     method: methodType,
+     body: JSON.stringify(film),
+     headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+     },
+   }
   }
 
-  _checkStatus(response) {
+  const _checkStatus = response => {
     if (response.status >= 200 && response.status < 300) {
       const json = response.json();
-      // console.log(json)
       return json;
     } else {
       const error = new Error(`HTTP Error ${response.statusText}`);
@@ -63,9 +48,8 @@ class Client {
       throw error;
     }
   }
-}
 
-// const client = new Client();
-// client.getFilms('http://localhost:3005/api/films');
+  return {getFilms,saveFilm,deleteFilm}
+}
 
 export default Client;

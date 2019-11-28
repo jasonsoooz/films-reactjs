@@ -5,32 +5,42 @@ import FilmForm from './FilmForm';
 
 import Client from '../server/client'
 import IDGenerator from './IdGenerator'
+import Seed from './Seed';
 
-const FilmList = ({ initialFilms, isTest }) => {
-  const [films, setFilms ] = useState(initialFilms);
+const FilmList = ({isTest}) => {
+  const [films, setFilms ] = useState([]);
   const [isAdd, setIsAdd ] = useState(false);
+  const [filmId, setFilmId ] = useState(0);
 
-  const client = new Client();
+  const client = Client();
   const url = '/api/films'
   
   useEffect(() => {
-    if (!isTest) {
+    if (isTest) {
+      setFilms(Seed.films);
+    } else {
       const filmsPromise = client.getFilms(url);
       filmsPromise.then(films => {
         // console.log(`films: ${films}`);
         setFilms(films);
         setIsAdd(false);
+      })
+      .catch(() => {
+        setFilms(Seed.films);
+        setIsAdd(false);
       });
     }
-  });
+  }, []);
 
   const handleDelete = filmId => {
     const retainedFilms = films.filter((film) => (
       film.id !== filmId
     ));
-    if (!isTest) {
-      client.deleteFilm(url, {id: filmId});
-    }
+
+    const deletePromise = client.deleteFilm(url, {id: filmId});
+    // allow app to run when no backend
+    deletePromise.catch(() => null);
+    
     setFilms(retainedFilms);
   }
 
@@ -42,6 +52,12 @@ const FilmList = ({ initialFilms, isTest }) => {
     setIsAdd(false);
   }
 
+  const _addNewFilmWhenNoBackend = newFilm => {
+    newFilm.id = IDGenerator().getNextId(films);
+    const newFilms = films.concat(newFilm);
+    setFilms(newFilms);
+  }
+
   const handleAddSubmit = (id, title, releaseDate, imdbRating, director) => {
     const newFilm = {
       id: id, 
@@ -50,21 +66,27 @@ const FilmList = ({ initialFilms, isTest }) => {
       imdbRating: imdbRating,
       director: director
     }
-    if (!isTest) {
-      client.addFilm(url, newFilm);
+
+    if (isTest) {
+      _addNewFilmWhenNoBackend(newFilm);
+    } else {
+      const filmPromise = client.saveFilm(url, newFilm);
+      filmPromise.then(film => {
+        const newFilms = films.concat(film);
+        setFilms(newFilms);
+      })
+      .catch(() => {
+          _addNewFilmWhenNoBackend(newFilm);
+      });
     }
-    
-    const newFilms = films.concat(newFilm);
-    setFilms(newFilms);
+
     setIsAdd(false);
   }
 
   if (isAdd === true) {
-    const newId = IDGenerator().getNextId(films);
-
     return (<FilmForm 
-      key={'filmadd-' + newId}
-      id={newId}
+      key={'filmadd-' + filmId}
+      id={filmId}
       onAddCancel={handleAddCancel}
       onAddSubmit={handleAddSubmit}
     />);
