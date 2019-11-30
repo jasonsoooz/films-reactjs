@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import Film from './Film';
 import FilmForm from './FilmForm';
 
 import Client from '../server/client'
 import IDGenerator from './IdGenerator'
 import Seed from './Seed';
+import Table from './Table';
 
 const FilmList = ({isTest}) => {
   const [films, setFilms ] = useState([]);
@@ -14,7 +14,46 @@ const FilmList = ({isTest}) => {
 
   const client = Client();
   const url = '/api/films'
-  
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Films',
+        columns: [
+          {
+            Header: 'ID',
+            accessor: 'id',
+          },
+          {
+            Header: 'Film',
+            accessor: 'title',
+          },
+          {
+            Header: 'Release Date',
+            accessor: 'releaseDate',
+          },
+          {
+            Header: 'Imdb Rating',
+            accessor: 'imdbRating',
+          },
+          {
+            Header: 'Director',
+            accessor: 'director',
+          },
+          {
+            Header: 'Actions',
+            Cell: ({row, data}) => (
+              <div>
+                <button onClick={() => handleDelete(row.original.id, data)} className='ui red button'>Delete</button>
+              </div>
+            )
+          }
+        ]
+      },
+    ],
+    []
+  )
+
   useEffect(() => {
     if (isTest) {
       setFilms(Seed.films);
@@ -32,8 +71,8 @@ const FilmList = ({isTest}) => {
     }
   }, []);
 
-  const handleDelete = filmId => {
-    const retainedFilms = films.filter((film) => (
+  const handleDelete = (filmId, data) => {
+    const retainedFilms = data.filter((film) => (
       film.id !== filmId
     ));
 
@@ -93,37 +132,11 @@ const FilmList = ({isTest}) => {
     />);
   }
 
-  const filmComponents = films.map((film) => (
-    <Film
-      key={'filmId-' + film.id}
-      id={film.id}
-      title={film.title}
-      releaseDate={film.releaseDate}
-      imdbRating={film.imdbRating}
-      director={film.director}
-      onDelete={handleDelete}
-    />
-  ));
-
   return (
     <div className='ui unstackable items'>
       <h1>Films</h1>
       <button onClick={handleAdd} className='ui primary button'>Add film</button>
-      <table className='ui striped celled table'>
-        <thead>
-          <tr>
-              <th>ID</th>
-              <th>Film</th>
-              <th>Release Date</th>
-              <th>Imdb Rating</th>
-              <th>Director</th>
-              <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filmComponents}
-        </tbody>
-      </table>
+      <Table columns={columns} data={films} />
     </div>
   );
 }

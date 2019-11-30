@@ -16,7 +16,8 @@
     "react-scripts": "^3.0.1",
     "semantic-ui-css": "^2.4.1",
     "formik": "^1.5.8",
-    "yup": "^0.27.0"
+    "yup": "^0.27.0",
+    "react-table": "next"
   },
   "scripts": {
     "start": "npm run reset-data; react-scripts start",

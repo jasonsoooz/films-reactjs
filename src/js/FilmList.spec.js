@@ -1,7 +1,5 @@
 import FilmList from './FilmList';
 import FilmListSelector from './FilmList.selector';
-import FilmForm from './FilmForm';
-import FilmFormSelector from './FilmForm.selector';
 
 import {cleanup} from '@testing-library/react'
 
@@ -22,6 +20,23 @@ describe('FilmList', () => {
         expect(
           filmListSelector.addButton()
         ).toBeVisible();
+    });
+
+    it('should have Delete buttons', () => {
+      expect(
+        filmListSelector.numberOfDeleteButtons()
+      ).toEqual(2);
+    });
+
+    describe('user clicks delete button', () => {
+      it('should delete an item', () => {
+        const origSize = filmListSelector.numberOfDeleteButtons();
+  
+        filmListSelector.deleteFirst();
+  
+        const sizeAfterDelete = filmListSelector.numberOfDeleteButtons();
+        expect(sizeAfterDelete).toEqual(origSize - 1);
+      });
     });
 
     describe('user clicks add button', () => {
