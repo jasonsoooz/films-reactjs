@@ -28,15 +28,40 @@ describe('FilmList', () => {
       ).toEqual(2);
     });
 
-    describe('user clicks delete button', () => {
-      it('should delete an item', () => {
-        const origSize = filmListSelector.numberOfDeleteButtons();
-  
-        filmListSelector.deleteFirst();
-  
-        const sizeAfterDelete = filmListSelector.numberOfDeleteButtons();
-        expect(sizeAfterDelete).toEqual(origSize - 1);
-      });
+    it('user clicks delete button should delete an item', () => {
+      const origSize = filmListSelector.numberOfDeleteButtons();
+
+      filmListSelector.deleteFirst();
+
+      const sizeAfterDelete = filmListSelector.numberOfDeleteButtons();
+      expect(sizeAfterDelete).toEqual(origSize - 1);
+    });
+
+    it('click imdb rating column header once should sort by ascending', () => {
+      filmListSelector.clickImdbRatingHeader();
+
+      const rows = document.body.querySelectorAll('tbody tr');
+      expect(rows[0].children[3].innerHTML).toEqual('6.9');
+      expect(rows[1].children[3].innerHTML).toEqual('7.3');
+    });
+
+    it('click imdb rating column header twice should sort by descending', () => {
+      filmListSelector.clickImdbRatingHeader();
+      filmListSelector.clickImdbRatingHeader();
+
+      const rows = document.body.querySelectorAll('tbody tr');
+      expect(rows[0].children[3].innerHTML).toEqual('7.3');
+      expect(rows[1].children[3].innerHTML).toEqual('6.9');
+    });
+
+    it('click imdb rating column header third time should sort by orig order', () => {
+      filmListSelector.clickImdbRatingHeader();
+      filmListSelector.clickImdbRatingHeader();
+      filmListSelector.clickImdbRatingHeader();
+
+      const rows = document.body.querySelectorAll('tbody tr');
+      expect(rows[0].children[3].innerHTML).toEqual('7.3');
+      expect(rows[1].children[3].innerHTML).toEqual('6.9');
     });
 
     describe('user clicks add button', () => {

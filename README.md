@@ -28,6 +28,7 @@ npm test
 ```
 
 ## ToDo
+* add react-table filter, pagination
 * fix test warnings
 * Add back end
 * Add validation on mandatory fields (title, release date)

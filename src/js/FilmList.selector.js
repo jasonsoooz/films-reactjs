@@ -73,10 +73,14 @@ const FilmListSelector = FilmList => {
     return queryByText(text, {exact: false});
   }
 
+  const clickImdbRatingHeader = () => {
+    fireEvent.click(getByText('Imdb Rating'));
+  }
+
   return {numberOfDeleteButtons,deleteFirst, 
     addButton,addFilm,filmInput,cancel,submitFilm,changeTitle,
     changeReleaseDate,changeImdb,changeDirector,
-    getTextContent,getValidationError
+    getTextContent,getValidationError,clickImdbRatingHeader
   }
 }
 
