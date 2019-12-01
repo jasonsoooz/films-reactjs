@@ -83,11 +83,36 @@ const FilmListSelector = FilmList => {
     fireEvent.change(inputFilterId, {target:{value: filterText}});
   }
 
+  const startOfPageButton = () => {
+    return getByText('<<')
+  }
+
+  const previousPageButton = () => {
+    return getByText('<')
+  }
+
+  const nextPageButton = () => {
+    return getByText('>')
+  }
+
+  const endOfPageButton = () => {
+    return getByText('>>')
+  }
+
+  const pageInput = () => {
+    return getByTestId('pageInput');
+  }
+
+  const pageSelect = () => {
+    return getByTestId('pageSelect');
+  }
+
   return {numberOfDeleteButtons,deleteFirst, 
     addButton,addFilm,filmInput,cancel,submitFilm,changeTitle,
     changeReleaseDate,changeImdb,changeDirector,
     getTextContent,getValidationError,clickImdbRatingHeader,
-    filterId
+    filterId,startOfPageButton,previousPageButton,nextPageButton,
+    endOfPageButton,pageInput,pageSelect
   }
 }
 

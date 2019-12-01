@@ -74,6 +74,20 @@ describe('FilmList', () => {
       expect(filmListSelector.getTextContent('Spiderman')).toBeVisible();
     });
 
+    it('contains pagination ui', () => {
+      expect(filmListSelector.startOfPageButton()).toBeVisible();
+      expect(filmListSelector.startOfPageButton()).toBeDisabled();
+
+      expect(filmListSelector.previousPageButton()).toBeVisible();
+      expect(filmListSelector.previousPageButton()).toBeDisabled();
+
+      expect(filmListSelector.nextPageButton()).toBeVisible();
+      expect(filmListSelector.endOfPageButton()).toBeVisible();
+
+      expect(filmListSelector.pageInput()).toBeVisible();
+      expect(filmListSelector.pageSelect()).toBeVisible();
+    });
+
     describe('user clicks add button', () => {
       let initialSize;
     
