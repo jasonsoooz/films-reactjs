@@ -136,6 +136,7 @@ const FilmList = ({isTest}) => {
     <div className='ui unstackable items'>
       <h1>Films</h1>
       <button onClick={handleAdd} className='ui primary button'>Add film</button>
+      <br /><br />
       <Table columns={columns} data={films} />
     </div>
   );
