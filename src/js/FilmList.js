@@ -5,7 +5,7 @@ import FilmForm from './FilmForm';
 import Client from '../server/client'
 import IDGenerator from './IdGenerator'
 import Seed from './Seed';
-import Table from './Table';
+import Table from './table/Table';
 
 const FilmList = ({isTest}) => {
   const [films, setFilms ] = useState([]);
