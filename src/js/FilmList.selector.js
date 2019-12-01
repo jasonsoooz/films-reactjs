@@ -6,7 +6,8 @@ import Seed from './Seed'
 
 const FilmListSelector = FilmList => {
 
-  const {getAllByText,getByText,getByLabelText,queryByText} = render(<FilmList initialFilms={Seed.films} isTest={true}/>);
+  const {getAllByText,getByText,getByLabelText,
+    queryByText,getByTestId} = render(<FilmList initialFilms={Seed.films} isTest={true}/>);
 
   const numberOfDeleteButtons = () => {
     // Count number of delete buttons as 1 delete button per film    
@@ -77,10 +78,16 @@ const FilmListSelector = FilmList => {
     fireEvent.click(getByText('Imdb Rating'));
   }
 
+  const filterId = filterText => {
+    const inputFilterId = getByTestId('id').firstChild;
+    fireEvent.change(inputFilterId, {target:{value: filterText}});
+  }
+
   return {numberOfDeleteButtons,deleteFirst, 
     addButton,addFilm,filmInput,cancel,submitFilm,changeTitle,
     changeReleaseDate,changeImdb,changeDirector,
-    getTextContent,getValidationError,clickImdbRatingHeader
+    getTextContent,getValidationError,clickImdbRatingHeader,
+    filterId
   }
 }
 

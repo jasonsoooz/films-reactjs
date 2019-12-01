@@ -64,6 +64,16 @@ describe('FilmList', () => {
       expect(rows[1].children[3].innerHTML).toEqual('6.9');
     });
 
+    it('type in ID filter column filters records', () => {
+      expect(filmListSelector.numberOfDeleteButtons()).toEqual(2);
+      
+      filmListSelector.filterId('1');
+
+      expect(filmListSelector.numberOfDeleteButtons()).toEqual(1);
+      expect(filmListSelector.getTextContent('1')).toBeVisible();
+      expect(filmListSelector.getTextContent('Spiderman')).toBeVisible();
+    });
+
     describe('user clicks add button', () => {
       let initialSize;
     
